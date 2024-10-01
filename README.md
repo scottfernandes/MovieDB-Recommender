@@ -7,6 +7,7 @@
 
 # Frontend
 Used NextJS and ShadcnUI for frontend
+
 Perform the following in the terminal:-
 1. cd movierecom
 2. npm install
