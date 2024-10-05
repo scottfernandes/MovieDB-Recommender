@@ -4,6 +4,7 @@
 3. Add your unique clientId and secret in the .env file which is already created in 'movierecom' folder.
 4. Uses TMDB API for fetching details like poster,cast details,etc.
 5. Make sure to create your account on TMDB and use your API Key. Edit the variable in the server.py file.
+6. In the src/app folder, create this "api/auth/[...nextAuth]" and in this directory add the route.js file
 
 # Frontend
 Used NextJS and ShadcnUI for frontend
