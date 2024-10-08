@@ -8,7 +8,7 @@ from flask import request
 import os
 from datetime import datetime
 
-API_KEY='75d6f4d358afd80023fc135735da8af5'
+API_KEY=' '
 df = pd.read_csv('server\\TMDB_Final.csv')
 main_features = df[['id','title','genres','overview','crew','keywords','cast','vote_average','release_date']]
 main_features.isnull().sum()
