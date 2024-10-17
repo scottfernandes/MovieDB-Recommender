@@ -10,12 +10,6 @@ import random
 from proper import *
 import logging
 warnings.filterwarnings('ignore',category=pd.errors.SettingWithCopyWarning)
-logging.basicConfig(level=logging.INFO,  
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    handlers=[
-                        logging.FileHandler('app.log'), 
-                        logging.StreamHandler()  
-                    ])
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
