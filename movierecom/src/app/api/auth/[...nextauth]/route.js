@@ -84,7 +84,7 @@ export const authOptions = {
       return true; // Allow sign-in
     },
     async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : `${baseUrl}/user/recom`;
+      return url.startsWith(baseUrl) ? url : `${baseUrl}/user`;
     },
   },
   pages: {

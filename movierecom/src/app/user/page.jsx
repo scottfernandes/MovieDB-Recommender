@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Inter, Lancelot, Poppins } from "next/font/google";
 import Link from "next/link";
@@ -8,44 +8,61 @@ import axios from "axios";
 import Footer from "../helpers/Footer";
 import Navbar from "../helpers/Navbar";
 import { useEffect, useState } from "react";
-import { Carousel, CarouselContent, CarouselDots, CarouselItem } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselDots,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import MovieCard from "../helpers/MovieCard";
+import { Card } from "@/components/ui/card";
+import { ClipLoader } from "react-spinners";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["600", "300"] });
 const inter = Inter({ subsets: ["latin"] });
 const lancelot = Lancelot({ subsets: ["latin"], weight: ["400"] });
 
 export default function Home() {
-  const{data:session} = useSession()
-   
-  const router = useRouter()
+  const { data: session } = useSession();
+
+  const router = useRouter();
   if (!session) {
-    redirect('/api/auth/signin');
-}
-    const [movies,setMovies] = useState([])
-    const [posters,setPosters] = useState([])
-    const [ratings,setRatings] = useState([])
-    useEffect(() => {
-      
-        axios.get(`http://localhost:5000/user?username=${session.user.email}`,{withCredentials:true})
-        .then((response)=>{
-            
-            setMovies(response.data['movie_titles'])
-            setPosters(response.data['movies_poster'])
-            setRatings(response.data['movie_ratings'])
-        })
-        .catch((error)=>{
-            console.log(error);
-            
-        })
-    
-     
-    }, [])
-    
+    redirect("/api/auth/signin");
+  }
+  const [movies, setMovies] = useState([]);
+  const [posters, setPosters] = useState([]);
+  const [ratings, setRatings] = useState([]);
+  const [load,setLoad] = useState(false)
+  useEffect(() => {
+    setLoad(true)
+    axios
+      .get(`http://localhost:5000/user?username=${session.user.email}`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setMovies(response.data["movie_titles"]);
+        setPosters(response.data["movies_poster"]);
+        setRatings(response.data["movie_ratings"]);
+        setLoad(false)
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoad(false)
+      });
+  }, []);
 
   return (
-    <div className="flex flex-col min-h-screen  text-white">
-                  <Navbar/>
+   <>
+    {load?(
+      <>
+     <div className="loader bg-white flex items-center justify-center h-screen w-screen">
+          <ClipLoader color="black" size={100} />
+          <p className={`${lancelot.className} text-5xl`}>MovieDB</p>
+        </div>
+    </>):(
+      <>
+       <div className="flex flex-col min-h-screen  text-white">
+      <Navbar />
 
       <div className="relative">
         <img
@@ -57,7 +74,9 @@ export default function Home() {
           <div className={`${inter.className} text-center`}>
             <p className="text-4xl sm:text-5xl lg:text-6xl text-white">
               Welcome to{" "}
-              <span className={`text-red-500 text-7xl font-bold ${lancelot.className}`}>
+              <span
+                className={`text-red-500 text-7xl font-bold ${lancelot.className}`}
+              >
                 MovieDB
               </span>
             </p>
@@ -74,9 +93,7 @@ export default function Home() {
                   Search for Movies
                 </Button>
               </Link>
-             <Link href={'/about-us'}>
-            
-              </Link>
+              <Link href={"/about-us"}></Link>
             </div>
           </div>
         </div>
@@ -84,67 +101,101 @@ export default function Home() {
       </div>
 
       <div className="movies mt-40">
-        <p className="text-5xl text-center text-red-500 underline">Based on your Watchlist</p>
-        <div className="castcards mt-10">
-                <Carousel
-                  className="w-full"
-                  opts={{
-                    slidesToScroll: 1,
-                    dots: true,
-                    responsive: [
-                      {
-                        breakpoint: 1024, // lg
-                        settings: {
-                          slidesToShow: 3,
-                          slidesToScroll: 3,
-                        },
+        {movies.length>0 && (
+          <>
+            <p className="text-5xl text-center text-red-500 underline">
+              Based on your Watchlist
+            </p>
+            <div className="castcards mt-10">
+              <Carousel
+                className="w-full"
+                opts={{
+                  slidesToScroll: 1,
+                  dots: true,
+                  responsive: [
+                    {
+                      breakpoint: 1024, // lg
+                      settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
                       },
-                      {
-                        breakpoint: 768, // md
-                        settings: {
-                          slidesToShow: 2,
-                          slidesToScroll: 2,
-                        },
+                    },
+                    {
+                      breakpoint: 768, // md
+                      settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
                       },
-                      {
-                        breakpoint: 640, // sm
-                        settings: {
-                          slidesToShow: 1,
-                          slidesToScroll: 1,
-                        },
+                    },
+                    {
+                      breakpoint: 640, // sm
+                      settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
                       },
-                    ],
-                  }}
+                    },
+                  ],
+                }}
+              >
+                <CarouselContent className="mx-5">
+                  {movies.map(
+                    (movie, index) =>
+                      index > 0 && (
+                        <CarouselItem
+                          className="lg:basis-1/3 md:basis-1/2 sm:basis-full"
+                          key={index}
+                        >
+                          <MovieCard
+                            movie={movie}
+                            poster={posters[index]}
+                            rating={ratings[index]}
+                            movieClick={() =>
+                              router.push(
+                                `/user/recom/${encodeURIComponent(movie)}`
+                              )
+                            }
+                          />
+                        </CarouselItem>
+                      )
+                  )}
+                </CarouselContent>
+                <CarouselDots />
+              </Carousel>
+            </div>
+          </>
+        )}
+
+        <div className="gotosearch">
+          <section className="max-w-6xl mx-auto my-16">
+            <div className="ml-48  w-2/3">
+              <div className="feature  text-center p-10 bg-zinc-800 rounded-lg ">
+                <h3 className="text-2xl font-semibold mb-4">
+                  Personalized Recommendations
+                </h3>
+                <p>
+                  Search for Movies and create your own personalized watchlist
+                </p>
+                <Link href="/user/recom">
+                <Button
+                  variant="destructive"
+                  className="mx-2 mt-5  h-10 sm:h-12"
                 >
-                  <CarouselContent className="mx-5">
-                    {movies.map(
-                      (movie, index) =>
-                        index > 0 && (
-                          <CarouselItem
-                            className="lg:basis-1/3 md:basis-1/2 sm:basis-full"
-                            key={index}
-                          >
-                            <MovieCard
-                              movie={movie}
-                              poster={posters[index]}
-                              rating={ratings[index]}
-                              movieClick={() =>
-                                router.push(
-                                  `/user/recom/${encodeURIComponent(movie)}`
-                                )
-                              }
-                            />
-                          </CarouselItem>
-                        )
-                    )}
-                  </CarouselContent>
-                  <CarouselDots />
-                </Carousel>
+                  Search for Movies
+                </Button>
+              </Link>
               </div>
+            </div>
+          </section>
+        </div>
       </div>
       <div className="mt-24">
         <Footer />
       </div>
     </div>
+      </>
+    )
+
+    }
+   </>
   );
 }

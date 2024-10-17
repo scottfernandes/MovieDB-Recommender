@@ -10,7 +10,7 @@ const poppins = Poppins({ subsets: ["latin"] ,weight:['500']});
 
 export default function MovieCard({ poster, movie,rating, movieClick }) {
   return (
-    <div className="flex justify-center p-4 ">
+    <div className="flex justify-center p-4 scale-100 ">
       <Card className='w-2/3 sm:max-w-sm md:max-w-md lg:max-w-1/4  rounded-lg border-none cursor-pointer ' onClick={movieClick}>
         <CardHeader className=''>
           <img

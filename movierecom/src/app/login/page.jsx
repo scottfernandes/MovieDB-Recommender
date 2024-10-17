@@ -33,7 +33,7 @@ export default function Page() {
   const { data: session } = useSession();
   const [pass, showPass] = useState(false);
   if (session) {
-    router.push("/user/recom");
+    router.push("/user");
   }
 
   const authMethods = [
@@ -52,7 +52,7 @@ export default function Page() {
       redirect: false,
       email: values.email,
       password: values.password,
-      callbackUrl: "/user/recom",
+      callbackUrl: "/user",
     });
 
     if (result?.error) {

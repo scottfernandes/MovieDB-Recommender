@@ -39,10 +39,16 @@ df = pd.read_csv('server\\TMDB_Final.csv')
 @app.route('/user',methods=['GET'])
 def user():
     email  = request.args.get('username')
+    titles=[]
     watchlist_movies_json = db['Users'].find_one({"email":email},{"movies":4})
-    movies = watchlist_movies_json.get('movies',[])
-    final_movies=recommend(movies[0]['title'])
-    return jsonify({"movie_titles":final_movies[0],"movies_poster":final_movies[1],"movie_ratings":final_movies[-1]})  
+    if watchlist_movies_json:
+        movies = watchlist_movies_json.get('movies',[])
+        for i in range(len(movies)):
+            titles.append(movies[i]['title'])
+        final_movies = recommend(random.choice(titles))
+        return jsonify({"movie_titles":final_movies[0],"movies_poster":final_movies[1],"movie_ratings":final_movies[-1]})  
+    else:
+        return jsonify({"message":"No movies in watchlist"})
 
    
 @app.route('/signup', methods=['GET', 'POST'])

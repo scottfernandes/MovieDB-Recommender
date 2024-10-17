@@ -24,7 +24,10 @@ function NavContent() {
       <>
         <>
        <div className="topSide flex items-center">
+        <Link href={"/user"}>
         <p className="name text-red-500 text-lg text-ellipsis">{session.user.email}</p>        
+
+        </Link>
        </div>
        <Link href={"/user/recom"} className="mt-10">
         <li className=" cursor-pointer">Search Movies</li>

@@ -275,11 +275,11 @@ const Recommend = ({ params }) => {
                   <CarouselContent className="mx-5">
                     {name.map((actor, index) => (
                       <CarouselItem
-                        className="lg:basis-1/3 md:basis-1/2 sm:basis-full"
+                        className="lg:basis-1/3  md:basis-1/2 sm:basis-full"
                         key={index}
                       >
-                        <div className="card p-10 md:p-20">
-                          <Card className="w-full p-5 rounded-none border-none shadow-lg shadow-white/50 bg-zinc-800">
+                        <div className="card  p-10 md:p-20">
+                          <Card className="w-full h-full p-5 rounded-none border-none shadow-lg shadow-white/50 bg-zinc-800">
                             <CardHeader>
                               <img
                                 src={actorposter[index]}
