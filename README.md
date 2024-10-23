@@ -12,4 +12,4 @@
 
 
 # IMDB Review Dataset<
-Kaggle Site: <a href='https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews' target='_blank'>Link to Dataset</a>
+Kaggle Site: <a href='https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews'>Link to Dataset</a>
