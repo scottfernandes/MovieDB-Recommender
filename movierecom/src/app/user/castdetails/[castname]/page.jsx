@@ -23,14 +23,12 @@ export default function page({ params }) {
   const [movposter, setMovieposter] = useState([]);
   const [actorposter, setActorposter] = useState("");
   const [rating,setRating] = useState("")
-  const [load, setLoad] = useState(false);
   const [clamp,setClamp] = useState(true)
   const router = useRouter();
   const { castname: selectedcast } = params;
 
   useEffect(() => {
     if (selectedcast) {
-      setLoad(true);
       axios
         .post(
           "http://127.0.0.1:5000/castdetails",
@@ -52,7 +50,6 @@ export default function page({ params }) {
           setTitle(response.data["movies"]);
           setMovieposter(response.data["movie_poster"]);
           setRating(response.data['ratings'])
-          setLoad(false);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -61,12 +58,7 @@ export default function page({ params }) {
   }, [selectedcast]);
   return (
     <div>
-      {load ? (
-        <div className="loader  flex items-center justify-center  text-black bg-white h-screen w-screen">
-          <ClipLoader color="black" size={100} />
-          <p className={`${lancelot.className} text-5xl`}>MovieDB</p>
-        </div>
-      ) : (
+        
         <div>
           <header>
             <Navbar/>
@@ -134,7 +126,6 @@ export default function page({ params }) {
             <Footer/>
           </div>
         </div>
-      )}
     </div>
   );
 }

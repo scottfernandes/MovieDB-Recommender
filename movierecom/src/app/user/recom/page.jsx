@@ -19,7 +19,6 @@ const Recom = () => {
     const [input, setInput] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const router = useRouter();
-    const [load, setLoad] = useState(false);
     const [error, setError] = useState('');
     const { data: session } = useSession({});
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -28,7 +27,6 @@ const Recom = () => {
         redirect('/api/auth/signin');
     }
 
-    // Debounced function to fetch suggestions
     const fetchSuggestions = async (value) => {
         if (value.length > 2) {
             try {
@@ -38,7 +36,7 @@ const Recom = () => {
                 console.error("Error fetching suggestions:", error);
             }
         } else {
-            setSuggestions([]); // Clear suggestions if input is less than 2 characters
+            setSuggestions([]); 
         }
     };
 
@@ -58,7 +56,6 @@ const Recom = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (session.user) {
-            setLoad(true);
             axios.post('http://localhost:5000/recom',{movie_name:input},{withCredentials:true})
             .then((response)=>{
                 console.log(response.data);
@@ -66,7 +63,6 @@ const Recom = () => {
             })
             .catch((err)=>{
                 setError(err.response.data.error)
-                setLoad(false)
             })
         }
     };

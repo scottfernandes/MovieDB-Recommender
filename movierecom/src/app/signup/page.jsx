@@ -41,7 +41,6 @@ export default function Page() {
   const { data: session } = useSession();
   const [error,setError] = useState();
   const [isDialogOpen,setIsDialogOpen] = useState(false)
-  const [load,setLoad] = useState(false)
   if (session) {
     redirect("/user/recom");
   }
@@ -50,7 +49,6 @@ export default function Page() {
     const className= "flex h-9 w-full rounded-md   bg-zinc-800/80 px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
 
   const handleSignIn = async (values) => {
-    setLoad(true)
 
     try {
       await axios.post("http://localhost:5000/signup", {
@@ -64,11 +62,8 @@ export default function Page() {
       console.error(error.response.data.message);
       setError(error.response.data.message)
       setIsDialogOpen(true)
-      setLoad(false)
     }
-    finally{
-      setLoad(false)
-    }
+    
   };
 
   return (
@@ -160,7 +155,7 @@ export default function Page() {
                         type="submit"
                         className={`w-full`}
                       >
-                       {load ? <ClipLoader color="white" size={20}/> :'Create Account'}
+                        Submit
                       </Button>
                       <div className="links self-start mt-8">
                         <p>

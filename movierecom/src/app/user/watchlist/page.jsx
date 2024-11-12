@@ -23,26 +23,21 @@ export default function page() {
  const username=session.user.email
   const [movies,setMovies] = useState([])
   const [error,setError] = useState('')
-  const [load,setLoad] = useState(false)
     useEffect(()=>{
 
       if(username){
-        setLoad(true)
         axios.get(`http://localhost:5000/watchlist?username=${username}`,{withCredentials:true})
         .then((response)=>{
             console.log(response.data.movies)
             setMovies(response.data.movies)
-            setLoad(false)
         }).catch((error)=>{
           
           setError(error.response.data.message)
-          setLoad(false)
         })
     }
     },[username])
     
     const removeMovie = async (movieName, moviePoster) => {
-      setLoad(true);
       try {
         const response = await axios.delete(
           `http://localhost:5000/watchlist`,
@@ -71,19 +66,12 @@ export default function page() {
         }
       } catch (e) {
         console.error('Error removing movie:', e);
-      } finally {
-        setLoad(false); // Ensure loading state is turned off
-      }
+      } 
     };
     
   return (
    <div>
-     {load ? (
-      <div className="loader  flex items-center justify-center  text-black bg-white h-screen w-screen">
-        <ClipLoader color="black" size={100} />
-        <p className={`${lancelot.className} text-5xl`}>MovieDB</p>
-      </div>
-    ) :(
+    
     <>
     <div className="min-h-screen">
   <div className="head">
@@ -138,7 +126,6 @@ export default function page() {
   </div>
 </div>
     </>
-        )}
    </div>
   );
 }

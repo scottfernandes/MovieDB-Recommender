@@ -32,9 +32,7 @@ export default function Home() {
   const [movies, setMovies] = useState([]);
   const [posters, setPosters] = useState([]);
   const [ratings, setRatings] = useState([]);
-  const [load,setLoad] = useState(false)
   useEffect(() => {
-    setLoad(true)
     axios
       .get(`http://localhost:5000/user?username=${session.user.email}`, {
         withCredentials: true,
@@ -43,23 +41,15 @@ export default function Home() {
         setMovies(response.data["movie_titles"]);
         setPosters(response.data["movies_poster"]);
         setRatings(response.data["movie_ratings"]);
-        setLoad(false)
       })
       .catch((error) => {
         console.log(error);
-        setLoad(false)
       });
   }, []);
 
   return (
    <>
-    {load?(
-      <>
-     <div className="loader bg-white flex items-center justify-center h-screen w-screen">
-          <ClipLoader color="black" size={100} />
-          <p className={`${lancelot.className} text-5xl`}>MovieDB</p>
-        </div>
-    </>):(
+   
       <>
        <div className="flex flex-col min-h-screen  text-white">
       <Navbar />
@@ -193,9 +183,7 @@ export default function Home() {
       </div>
     </div>
       </>
-    )
-
-    }
+  
    </>
   );
 }

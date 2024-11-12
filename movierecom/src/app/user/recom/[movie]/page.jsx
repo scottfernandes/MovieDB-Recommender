@@ -9,12 +9,10 @@ import { FaCross, FaPlay, FaSpinner } from "react-icons/fa";
 import { IoClose, IoDownloadOutline } from "react-icons/io5";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
-import ClipLoader from "react-spinners/ClipLoader";
 import YouTube from "react-youtube";
 import Footer from "@/app/helpers/Footer";
 import MovieCard from "@/app/helpers/MovieCard";
 const poppins = Poppins({ subsets: ["latin"], weight: ["600", "300"] });
-const lancelot = Lancelot({ weight: ["400"], subsets: ["latin-ext"] });
 import { BiMoviePlay } from "react-icons/bi";
 import {
   Carousel,
@@ -35,7 +33,6 @@ const Recommend = ({ params }) => {
   const [char, setChar] = useState([]);
   const [rating, setRating] = useState([]);
   const [actorposter, setActorposter] = useState([]);
-  const [load, setLoad] = useState(false);
   const [reviews, setReview] = useState([]);
   const [sentiment, setSentiment] = useState([]);
   const [expandedReviews, setExpandedReviews] = useState([]);
@@ -67,7 +64,6 @@ const Recommend = ({ params }) => {
 
   useEffect(() => {
     if (selectedMovie) {
-      setLoad(true);
 
       const response = axios
         .post(
@@ -100,12 +96,10 @@ const Recommend = ({ params }) => {
           setReview(data[5][0]);
           setSentiment(data[5][1]);
           setRating(data[6]);
-          setLoad(false);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
           setError(error);
-          setLoad(false);
         });
     }
   }, [selectedMovie]);
@@ -144,18 +138,12 @@ const Recommend = ({ params }) => {
 
   return (
     <div>
-      {load ? (
-        <div className="loader bg-white flex items-center justify-center h-screen w-screen">
-          <ClipLoader color="black" size={100} />
-          <p className={`${lancelot.className} text-5xl`}>MovieDB</p>
-        </div>
-      ) : (
+  
         <>
           <Navbar />
           <div>
             {" "}
             <div className="head relative bg-gray-900">
-              {/* Change from absolute to relative */}
               <div
                 className={`headercontent relative h-full flex flex-col md:flex-row  items-center md:items-start   px-4 md:px-20 p-10`}
               >
@@ -421,7 +409,6 @@ const Recommend = ({ params }) => {
             </div>
           </div>
         </>
-      )}
     </div>
   );
 };
